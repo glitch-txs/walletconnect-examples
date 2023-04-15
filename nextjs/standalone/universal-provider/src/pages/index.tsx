@@ -1,16 +1,17 @@
 import { openWCModal } from "@/walletconnect/WCConnect"
 import { WCInit } from "@/walletconnect/WCInit"
+import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 
 
 export default function Home() {
 
   const [universalProvider, setUniversalProvider] = useState<any>()
-  const [provider, setProvider] = useState<any>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [address, setAddress] = useState<string>('')
 
 
-  const walletInit = async()=>{
+  const walletConnectInit = async()=>{
     setIsLoading(true)
     const universalProvider = await WCInit()
     setUniversalProvider(universalProvider)
@@ -18,20 +19,41 @@ export default function Home() {
   }
 
   useEffect(()=>{
-    walletInit()
+    walletConnectInit()
   },[])
 
-  const connect = async()=>{
+  const handleConnect = async()=>{
     if(!universalProvider) return
+
     setIsLoading(true)
+
+    if(universalProvider.session){
+      await universalProvider.disconnect()
+      setAddress('')
+      return
+    }
+
     const userIsConnected = await openWCModal(universalProvider)
-    if(userIsConnected) setProvider(universalProvider)
+
+    if(userIsConnected){
+      const web3Provider = new ethers.providers.Web3Provider(universalProvider)
+      const signer = web3Provider.getSigner()
+      const address = await signer.getAddress()
+      setAddress(address)
+    }
+
     setIsLoading(false)
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button onClick={connect} >Connect</button>
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      <button 
+      className='py-0.5 px-2 rounded-md hover:bg-gray-500 transition duration-75 border-2' 
+      disabled={isLoading} 
+      onClick={handleConnect} >
+        { address ? 'Disconnect' : 'Connect'}
+      </button>
+      {address}
     </main>
   )
 }

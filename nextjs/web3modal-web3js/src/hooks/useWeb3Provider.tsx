@@ -1,6 +1,6 @@
 import { useProvider } from "wagmi";
-import toWeb3Provider from 'ethers-to-web3';
 import Web3 from 'web3';
+const toWeb3Provider = require('ethers-to-web3');
 
 export default function useWeb3Provider() {
 

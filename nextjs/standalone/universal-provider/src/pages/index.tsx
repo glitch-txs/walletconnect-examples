@@ -25,8 +25,6 @@ export default function Home() {
   const handleConnect = async()=>{
     if(!universalProvider) return
 
-    setIsLoading(true)
-
     if(universalProvider.session){
       await universalProvider.disconnect()
       setAddress('')
@@ -41,8 +39,6 @@ export default function Home() {
       const address = await signer.getAddress()
       setAddress(address)
     }
-
-    setIsLoading(false)
   }
 
   return (

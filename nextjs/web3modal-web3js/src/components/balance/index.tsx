@@ -1,6 +1,6 @@
 import { useAccount } from "wagmi";
 import { useState } from "react";
-import useWeb3Provider from "@/hooks/useWeb3Provider";
+import { useWeb3Provider } from "@/hooks/useWeb3Provider";
 
 export default function Balance() {
 

@@ -19,7 +19,7 @@ const ConnectButton = () => {
   
     function onClick() {
       if (isConnected) {
-        disconnect();
+        disconnect()
       } else {
         onOpen();
       }
@@ -29,7 +29,9 @@ const ConnectButton = () => {
     <button 
     className='py-0.5 px-2 rounded-md hover:bg-gray-500 transition duration-75 border-2' 
     onClick={onClick}
-    disabled={loading}>
+    disabled={loading}
+    // https://github.com/wagmi-dev/wagmi/discussions/2207#discussioncomment-5681242
+    suppressHydrationWarning={true}>
       {loading ? "Loading..." : label}
     </button>
   )

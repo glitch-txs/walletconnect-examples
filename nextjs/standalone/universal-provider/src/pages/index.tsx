@@ -1,12 +1,13 @@
 import { openWCModal } from "@/walletconnect/WCConnect"
 import { WCInit } from "@/walletconnect/WCInit"
 import { ethers } from "ethers"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 
 export default function Home() {
 
   const [universalProvider, setUniversalProvider] = useState<any>()
+  const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [address, setAddress] = useState<string>('')
 
@@ -38,8 +39,29 @@ export default function Home() {
       const signer = web3Provider.getSigner()
       const address = await signer.getAddress()
       setAddress(address)
+      setSigner(signer)
     }
   }
+
+  const interact = useCallback(async()=>{
+
+    const contractAddress = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
+
+    const ERC20Abi = [
+      "function name() view returns (string)",
+      "function approve(address spender, uint256 amount)"
+    ];
+
+    const erc20Contract = new ethers.Contract(contractAddress, ERC20Abi, signer)
+
+    const name = await erc20Contract.approve(address, 1).catch((e: any)=> {
+      if(e.code == 5000) console.log('user rejected transaction')
+      console.error(e)
+    })
+
+    console.log(name)
+
+  },[]) 
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
@@ -50,6 +72,10 @@ export default function Home() {
         { address ? 'Disconnect' : 'Connect'}
       </button>
       {address}
+      <br />
+      <button 
+      className='py-0.5 px-2 rounded-md hover:bg-gray-500 transition duration-75 border-2' 
+      onClick={interact} >interact</button>
     </main>
   )
 }

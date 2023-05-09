@@ -13,7 +13,6 @@
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
     "@walletconnect/legacy-provider": "^2.0.0",
-    "@web3modal/standalone": "^2.3.0",
     "autoprefixer": "10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",

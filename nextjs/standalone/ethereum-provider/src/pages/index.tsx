@@ -1,4 +1,3 @@
-import { Web3Modal } from "@web3modal/standalone";
 import { useEffect, useState } from "react";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
@@ -6,12 +5,6 @@ import { EthereumProvider } from "@walletconnect/ethereum-provider";
 if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }
-
-// 2. Configure web3Modal
-const web3Modal = new Web3Modal({
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  walletConnectVersion: 2,
-});
 
 export default function HomePage() {
   const [provider, setProvider] = useState<any>();
@@ -27,26 +20,11 @@ export default function HomePage() {
     setProvider(_provider);
   }
 
-  // 4. Initiate connection and pass pairing uri to the modal
+  // 4. Connect
   async function onOpenModal() {
     if (provider) {
-      const namespaces = {
-        eip155: {
-          methods: ["eth_sign"],
-          chains: ["eip155:1"],
-          events: ["accountsChanged"],
-        },
-      };
       try{
-        const { uri, approval } = await provider.connect();
-        if (uri) {
-          await web3Modal.openModal({
-            uri,
-            standaloneChains: namespaces.eip155.chains,
-          });
-          await approval();
-          web3Modal.closeModal();
-        }
+        await provider.connect();
       }catch(er: any){
         console.error(er)
       }

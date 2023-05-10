@@ -15,7 +15,7 @@ const buttonClass = 'py-0.5 px-2 rounded-md hover:bg-gray-500 transition duratio
 const Ethers = (props: Props) => {
 
   const publicClient = usePublicClient()
-  const walletClient = useWalletClient()
+  const { data: walletClient } = useWalletClient()
 
   const callProvider = async()=>{
     const provider = new ethers.providers.Web3Provider(publicClient as ethers.providers.ExternalProvider)
@@ -25,8 +25,8 @@ const Ethers = (props: Props) => {
   }
 
   const callContract = async()=>{
-    if(walletClient.data){
-      const provider = new ethers.providers.Web3Provider(walletClient.data as ethers.providers.ExternalProvider)
+    if(walletClient){
+      const provider = new ethers.providers.Web3Provider(walletClient as ethers.providers.ExternalProvider)
       const signer = provider.getSigner()
       const contract = new ethers.Contract(address, abi, signer);
       const res = await contract.name()

@@ -1,7 +1,6 @@
 import React from 'react'
 import { usePublicClient, useWalletClient } from 'wagmi'
-import { ethers } from "ethers";
-type Props = {}
+import { ethers } from "ethers"
 
 //MAINNET CONTRACT !!
 const address = "0x33132493DBfA4072D4655fe3f8238cbB940FaC4a";
@@ -12,7 +11,7 @@ const abi = [
 
 const buttonClass = 'py-0.5 px-2 rounded-md hover:bg-gray-500 transition duration-75 border-2 cursor-pointer'
 
-const Ethers = (props: Props) => {
+const Ethers = () => {
 
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
@@ -33,17 +32,19 @@ const Ethers = (props: Props) => {
       console.log("res", res)
     }
   }
+
   return (
     <>
-    <div 
-    className={buttonClass}
-    onClick={callContract} >Call Contract with Signer</div>
-    <br/>
-    <div
-    className={buttonClass}
-    onClick={callProvider} >Call Contract with Provider</div>
+      <div 
+      className={buttonClass}
+      onClick={callContract} >Call Contract with Signer
+      </div>
+      <br/>
+      <div
+      className={buttonClass}
+      onClick={callProvider} >Call Contract with Provider
+      </div>
     </>
-
   )
 }
 

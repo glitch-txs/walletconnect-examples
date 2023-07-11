@@ -8,6 +8,7 @@ export const WCInit = async()=> {
       56: 'https://bsc-dataseed.binance.org/',
       137:'https://polygon-rpc.com',
     },
+    bridge:"https://derelay.rabby.io"
     // infuraId:''
   })
 
